@@ -17,9 +17,18 @@ import Message from './Message';
 
 export default class MessageContainer extends React.PureComponent {
 
+  static getDerivedStateFromProps({ loadEarlier }, prevState) {
+    if (loadEarlier === prevState.loadEarlier) return prevState;
+
+    return {
+      loadEarlier,
+    };
+  }
+
   constructor(props) {
     super(props);
 
+    this.state = {};
     this.renderRow = this.renderRow.bind(this);
     this.renderFooter = this.renderFooter.bind(this);
     this.renderLoadEarlier = this.renderLoadEarlier.bind(this);
@@ -98,6 +107,7 @@ export default class MessageContainer extends React.PureComponent {
           ref={(ref) => (this.flatListRef = ref)}
           keyExtractor={(item) => item._id}
           enableEmptySections
+          extraData={this.state}
           automaticallyAdjustContentInsets={false}
           removeClippedSubviews={Platform.OS === 'android'}
           inverted={this.props.inverted}
